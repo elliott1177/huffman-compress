@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import sys
 class Node:
-    def __init__(self, freq=0, char=None):
+    def __init__(self, freq=0, character=None):
         self.freq = freq
-        self.char = char
+        self.character = character
         self.left = None
         self.right = None
 
@@ -59,59 +59,59 @@ def huffmantree(string):
 
 # takes in a dictionary and a binary tree and returns a dictionary of all the
 # chars in the binary tree with the value being their corresponding bitstrings.
-def makecodes(dict, bin_tree):
+def makecodes(code_dict, bin_tree):
     # call making codes with an empty bitarray and root of huffman tree.
     bitstring = ''
     #print("here")
-    makingcodes(dict, bitstring, bin_tree)
+    makingcodes(code_dict, bitstring, bin_tree)
 
 # This makes the bitcodes for each char in the huffman tree node (bin_tree). It
 # does this recursively by adding the bitarr input into the dictionary if the
 # bin_tree node is an external node. Otherwise it adds a 1 or 0 to the bitarr
 # and recursively calls the method again with the right and left subtree of
 # bin_tree.
-def makingcodes(dict, bitarr, bin_tree):
+def makingcodes(code_dict, bitarr, bin_tree):
     # if external node, add bitarr to dictionary.
-    if bin_tree.char != None:
-        dict[bin_tree.char] = bitarr
+    if bin_tree.character != None:
+        code_dict[bin_tree.character] = bitarr
     else:
-        makingcodes(dict, bitarr + '0', bin_tree.left)
-        makingcodes(dict, bitarr + '1', bin_tree.right)
+        makingcodes(code_dict, bitarr + '0', bin_tree.left)
+        makingcodes(code_dict, bitarr + '1', bin_tree.right)
 
 
 if __name__ == '__main__':
     # This is the encoding function.
     if sys.argv[1] == 'e':
-        correct_dict = {}
+        CORRECT_DICT = {}
         # The string data contains every char in the file we are reading from.
-        with open(sys.argv[2], 'r') as file:
-            data = file.read()
+        with open(sys.argv[2], 'r') as fileread:
+            DATA = fileread.read()
         # This is the frequency tree for making the codes.
-        tree = huffmantree(data)
+        TREE = huffmantree(DATA)
         # make the dictionary of bitcodes that line up with each character.
-        makecodes(correct_dict, tree)
+        makecodes(CORRECT_DICT, TREE)
         # write the dictionary first to the file, as it will be needed for
         # decoding. Next write every character in the form of it's optimal
         # bitstring.
-        with open(sys.argv[3], 'w') as file:
-          file.write(str(correct_dict))
-          file.write('\n')
-          for char in data:
-            file.write(correct_dict[char])
+        with open(sys.argv[3], 'w') as filewrite:
+            filewrite.write(str(CORRECT_DICT))
+            filewrite.write('\n')
+            for char in DATA:
+                filewrite.write(CORRECT_DICT[char])
     # This is the decoding function of the program.
     if sys.argv[1] == 'd':
         # reads in all of the bitstrings from the file along with the dictionary
-        with open(sys.argv[2], 'r') as file:
-            file_dict = eval(file.readline())
-            bitstring = file.read()
+        with open(sys.argv[2], 'r') as fileread:
+            FILE_DICT = eval(fileread.readline())
+            BITSTRING = fileread.read()
         # Reverse the dictionary so the keys are now the values and vice versa
-        correct_dict = {v: k for k, v in file_dict.iteritems()}
+        CORRECT_DICT = {v: k for k, v in FILE_DICT.iteritems()}
         # Use the dictionary and the bitstrings to write the ascii characters
         # to the specified file.
-        with open(sys.argv[3], 'w') as file:
+        with open(sys.argv[3], 'w') as filewrite:
             CODESTRING = ''
-            for char in bitstring:
-              CODESTRING += char
-              if CODESTRING in correct_dict:
-                  file.write(correct_dict[CODESTRING])
-                  CODESTRING = ''
+            for char in BITSTRING:
+                CODESTRING += char
+                if CODESTRING in CORRECT_DICT:
+                    filewrite.write(CORRECT_DICT[CODESTRING])
+                    CODESTRING = ''
