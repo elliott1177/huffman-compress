@@ -37,5 +37,5 @@ $ ./huffman.py e macbeth.txt out.txt
 ## Putting Macbeth into a binary converter:
 - I used this [website](https://onlinebinarytools.com/convert-text-to-binary) to convert Macbeth to binary based on ascii values, not a Huffman tree. It outputted a file named: output-onlinebinarytools.txt
 ## Comparing out.txt with output-onlinebinarytools.txt:
-![Comparison](https://github.com/elliott1177/huffman-compress/blob/master/Screenshot from 2020-05-18 00-04-10.png?raw=true)
+![Comparison](images/comparison.png)
 - As you can see, the Huffman algorithm produced a binary file ~ half the size of ascii bitstring conversion.
